@@ -16,7 +16,17 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-urlpatterns = [
+from rest_framework_nested import routers
+
+from authenticate.views import AccountViewSet
+
+router = routers.SimpleRouter()
+router.register(r'accounts', AccountViewSet)
+
+
+urlpatterns = patterns(
+    '',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^api-v1/', include('rest_framework.urls', namespace='rest_framework'))
-]
+    url(r'^api/v1', include(routers.urls)),
+    url(r'^.*$', IndexView_as_view(), name='index'),
+)
